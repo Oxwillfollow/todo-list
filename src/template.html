@@ -6,6 +6,44 @@
     <title>To-Do App</title>
 </head>
 <body>
+    <div id="sidebar">
+        <div class="sidebar-header">
+            <h1>Projects</h1>
+            <button type="button" id="new-project-btn">+</button>
+        </div>
+        <div id="projects-container">
 
+        </div>
+    </div>
+    <div id="main">
+
+    </div>
+    <dialog id="project-dialog" closedby="any">
+        <form>
+            <label for="project-name">Project name:</label>
+            <input type="text" id="project-name" name="project-name" required>
+            <label for="project-description">Project description:</label>
+            <input type="text" id="project-description" name="project-description">
+            <button type="submit" id="save-project-btn">Save</button>
+            <button value="cancel" formmethod="dialog" class="close-dialog-btn">x</button>
+        </form>
+    </dialog>
+    <dialog id="task-dialog" closedby="any">
+        <form>
+            <label for="task-name">Task name:</label>
+            <input type="text" id="task-name" name="task-name" required>
+            <label for="task-due-date">Due date:</label>
+            <input type="datetime-local" id="task-due-date" name="task-due-date" required>
+            <label for="task-notes">Notes:</label>
+            <input type="text" id="task-notes" name="task-notes">
+            <select name="tast-priority" id="tast-priority">
+                <option value="low">low</option>
+                <option value="medium" selected>medium</option>
+                <option value="high">high</option>
+            </select>
+            <button type="submit" id="save-task-btn">Save</button>
+            <button value="cancel" formmethod="dialog" class="close-dialog-btn">x</button>
+        </form>
+    </dialog>
 </body>
 </html>

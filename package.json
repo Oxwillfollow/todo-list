@@ -1,14 +1,14 @@
 {
-  "name": "restaurant-page",
+  "name": "todo-list",
   "version": "1.0.0",
   "description": "",
-  "homepage": "https://github.com/Oxwillfollow/restaurant-page#readme",
+  "homepage": "https://github.com/Oxwillfollow/todo-list#readme",
   "bugs": {
-    "url": "https://github.com/Oxwillfollow/restaurant-page/issues"
+    "url": "https://github.com/Oxwillfollow/todo-listissues"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Oxwillfollow/restaurant-page.git"
+    "url": "git+https://github.com/Oxwillfollow/todo-list.git"
   },
   "license": "ISC",
   "author": "",
