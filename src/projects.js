@@ -25,6 +25,8 @@ class Project {
 
 const projectsManager = (function(){
     const projects = [];
+
+    let activeProject;
     
     const add = function(project){
         projects.push(project);
@@ -35,6 +37,10 @@ const projectsManager = (function(){
     const remove = function(project){
         projects.splice(projects.indexOf(project), 1);
     }
+
+    const selectActive = function(project){
+        activeProject = project;
+    }
     
     return {
         get projects(){
@@ -42,6 +48,7 @@ const projectsManager = (function(){
         },
         add,
         remove,
+        selectActive,
     }
     
 })();

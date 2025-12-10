@@ -2,46 +2,57 @@ import { addNewProject } from "./interface";
 
 const uiStateManager = (function(){
     const cacheDOM = (function(){
+        // sidebar
         const projectsContainer = document.getElementById("projects-container");
         const newProjectBtn = document.getElementById("new-project-btn");
+        // dialogs
         const projectDialog = document.getElementById("project-dialog");
-        const taskDialog = document.getElementById("task-dialog");
         const projectNameInput = document.getElementById("project-name");
         const projectDescriptionInput = document.getElementById("project-description");
         const saveProjectBtn = document.getElementById("save-project-btn");
+        const taskDialog = document.getElementById("task-dialog");
+        // main
+        const activeProjectContainer = document.getElementById("active-project-container");
 
         return{
-            projectsContainer,
-            newProjectBtn,
-            projectDialog,
-            taskDialog,
-            projectNameInput,
-            projectDescriptionInput,
-            saveProjectBtn,
+            sidebar: {
+                projectsContainer,
+                newProjectBtn,
+            },
+            dialogs: {
+                projectDialog,
+                projectNameInput,
+                projectDescriptionInput,
+                saveProjectBtn,
+                taskDialog,
+            },
+            main: {
+                activeProjectContainer,
+            },
         }
     })();
     
     function bindEvents(){
-        cacheDOM.newProjectBtn.addEventListener('click', openProjectDialog);
-        cacheDOM.saveProjectBtn.addEventListener('click', saveProject);
-        cacheDOM.projectDialog.addEventListener('close', closeProjectDialog);
+        cacheDOM.sidebar.newProjectBtn.addEventListener('click', openProjectDialog);
+        cacheDOM.dialogs.saveProjectBtn.addEventListener('click', saveProject);
+        cacheDOM.dialogs.projectDialog.addEventListener('close', closeProjectDialog);
     }
 
     function saveProject(e){
         e.preventDefault();
-        addNewProject(cacheDOM.projectNameInput.value, cacheDOM.projectDescriptionInput.value);
+        addNewProject(cacheDOM.dialogs.projectNameInput.value, cacheDOM.dialogs.projectDescriptionInput.value);
         clearProjectDialogInput();
-        cacheDOM.projectDialog.close();
+        cacheDOM.dialogs.projectDialog.close();
     }
 
     function closeProjectDialog(){
         clearProjectDialogInput();
-        cacheDOM.projectDialog.close();
+        cacheDOM.dialogs.projectDialog.close();
     }
 
     function clearProjectDialogInput(){
-        cacheDOM.projectNameInput.value = "";
-        cacheDOM.projectDescriptionInput.value = "";
+        cacheDOM.dialogs.projectNameInput.value = "";
+        cacheDOM.dialogs.projectDescriptionInput.value = "";
     }
     
     function init(){
@@ -49,9 +60,9 @@ const uiStateManager = (function(){
     }
     
     function openProjectDialog(e){
-        if(e.currentTarget === cacheDOM.newProjectBtn){
+        if(e.currentTarget === cacheDOM.sidebar.newProjectBtn){
             // new project
-            cacheDOM.projectDialog.showModal();
+            cacheDOM.dialogs.projectDialog.showModal();
         }
     }
     
@@ -97,12 +108,12 @@ const uiStateManager = (function(){
         }
 
         projectContainer.append(projectHeader, projectTasksContainer);
-        cacheDOM.projectsContainer.appendChild(projectContainer);
+        cacheDOM.sidebar.projectsContainer.appendChild(projectContainer);
     }
 
     function clearProjectsDOM(){
-        while(cacheDOM.projectsContainer.firstChild){
-            cacheDOM.projectsContainer.removeChild(cacheDOM.projectsContainer.firstChild);
+        while(cacheDOM.sidebar.projectsContainer.firstChild){
+            cacheDOM.sidebar.projectsContainer.removeChild(cacheDOM.sidebar.projectsContainer.firstChild);
         }
     }
     
