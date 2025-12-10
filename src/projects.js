@@ -38,17 +38,20 @@ const projectsManager = (function(){
         projects.splice(projects.indexOf(project), 1);
     }
 
-    const selectActive = function(project){
+    const setActive = function(project){
         activeProject = project;
+        console.log("active project set");
+        console.log(activeProject);
     }
     
     return {
         get projects(){
             return [...projects] // return a copy of the array so the original can't be mutated
         },
+        get activeProject(){return activeProject},
         add,
         remove,
-        selectActive,
+        setActive,
     }
     
 })();

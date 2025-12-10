@@ -34,7 +34,7 @@ const uiStateManager = (function(){
     
     function bindEvents(){
         cacheDOM.sidebar.newProjectBtn.addEventListener('click', openProjectDialog);
-        cacheDOM.dialogs.saveProjectBtn.addEventListener('click', saveProject);
+        cacheDOM.dialogs.projectDialog.addEventListener('submit', saveProject);
         cacheDOM.dialogs.projectDialog.addEventListener('close', closeProjectDialog);
     }
 
@@ -66,12 +66,18 @@ const uiStateManager = (function(){
         }
     }
     
-    const updateDOM = function(projects){
+    const updateDOM = function(projectsManager){
         clearProjectsDOM();
+        clearActiveProjectDOM();
 
-        projects.forEach(project => {
+        projectsManager.projects.forEach(project => {
             createProjectDOM(project);
         });
+
+        if(!!projectsManager.activeProject){
+            console.log("theres an active project!");
+            createActiveProjectDOM(projectsManager.activeProject);
+        }
     }
 
     function createProjectDOM(project){
@@ -115,6 +121,28 @@ const uiStateManager = (function(){
         while(cacheDOM.sidebar.projectsContainer.firstChild){
             cacheDOM.sidebar.projectsContainer.removeChild(cacheDOM.sidebar.projectsContainer.firstChild);
         }
+    }
+
+    function clearActiveProjectDOM(){
+        while(cacheDOM.main.activeProjectContainer.firstChild){
+            cacheDOM.main.activeProjectContainer.removeChild(cacheDOM.main.activeProjectContainer.firstChild);
+        }
+    }
+
+    function createActiveProjectDOM(project){
+        console.log("creating active project DOM");
+        const projectHeader = document.createElement("h2");
+        projectHeader.classList.add("project-header");
+        projectHeader.textContent = project.name;
+        const projectDescriptionPara = document.createElement("p");
+        projectDescriptionPara.classList.add("project-description");
+        projectDescriptionPara.textContent = project.description;
+
+        cacheDOM.main.activeProjectContainer.append(projectHeader, projectDescriptionPara);
+    }
+
+    function createTaskDOM(task){
+
     }
     
     init();

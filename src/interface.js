@@ -2,8 +2,12 @@ import { Project, projectsManager } from "./projects";
 import uiState from "./uiState";
 
 function addNewProject(name, description){
-    projectsManager.add(new Project(name, description));
-    uiState.updateDOM(projectsManager.projects);
+    const newProject = new Project(name, description);
+    projectsManager.add(newProject);
+    if(!projectsManager.activeProject)
+        projectsManager.setActive(newProject);
+    
+    uiState.updateDOM(projectsManager);
 }
 
 export { addNewProject };

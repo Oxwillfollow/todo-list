@@ -6,18 +6,19 @@
     <title>To-Do App</title>
 </head>
 <body>
-    <div id="sidebar">
-        <div class="sidebar-header">
-            <h1>Projects</h1>
-            <button type="button" id="new-project-btn">+</button>
+    <div id="top-container">
+        <div id="sidebar">
+            <div class="sidebar-header">
+                <h1>Projects</h1>
+                <button type="button" id="new-project-btn">+</button>
+            </div>
+            <div id="projects-container">
+            </div>
         </div>
-        <div id="projects-container">
-
-        </div>
-    </div>
-    <div id="main">
-        <div id="active-project-container">
-            
+        <div id="main">
+            <div id="active-project-container">
+        
+            </div>
         </div>
     </div>
     <dialog id="project-dialog" closedby="any">
@@ -27,7 +28,6 @@
             <label for="project-description">Project description:</label>
             <input type="text" id="project-description" name="project-description">
             <button type="submit" id="save-project-btn">Save</button>
-            <button value="cancel" formmethod="dialog" class="close-dialog-btn">x</button>
         </form>
     </dialog>
     <dialog id="task-dialog" closedby="any">
@@ -44,7 +44,6 @@
                 <option value="high">high</option>
             </select>
             <button type="submit" id="save-task-btn">Save</button>
-            <button value="cancel" formmethod="dialog" class="close-dialog-btn">x</button>
         </form>
     </dialog>
 </body>
