@@ -18,7 +18,6 @@ const uiStateManager = (function(){
             projectNameInput,
             projectDescriptionInput,
             saveProjectBtn,
-            closeProjectDialogBtn,
         }
     })();
     
@@ -47,7 +46,6 @@ const uiStateManager = (function(){
     
     function init(){
         bindEvents();
-        updateDOM();
     }
     
     function openProjectDialog(e){
@@ -57,8 +55,55 @@ const uiStateManager = (function(){
         }
     }
     
-    const updateDOM = function(){
-        
+    const updateDOM = function(projects){
+        clearProjectsDOM();
+
+        projects.forEach(project => {
+            createProjectDOM(project);
+        });
+    }
+
+    function createProjectDOM(project){
+        console.log("creating project DOM");
+        const projectContainer = document.createElement("div");
+        projectContainer.classList.add("project-container");
+        const projectHeader = document.createElement("h2");
+        projectHeader.classList.add("project-header");
+        projectHeader.textContent = project.name;
+        const projectTasksContainer = document.createElement("div");
+        projectTasksContainer.classList.add("project-tasks-container");
+       
+        // display project tasks
+        if(project.tasks.length > 0){
+            for (let index = 0; index <= 3; index++) {
+                const projectTaskHeader = document.createElement("h3");
+                projectTaskHeader.classList.add("project-task-header");
+
+                if(!!project.tasks[index]){
+                    if(index > 2){
+                        projectTaskHeader.textContent = "...";
+                        projectTasksContainer.appendChild(projectTaskHeader);
+                        break;
+                    }
+                    else{
+                        projectTaskHeader.textContent = `${project.tasks[index].name}`;
+                        projectTasksContainer.appendChild(projectTaskHeader);
+                    }
+                }
+                else{
+                    break;
+                }
+            }
+        }
+
+        projectContainer.append(projectHeader, projectTasksContainer);
+        cacheDOM.projectsContainer.appendChild(projectContainer);
+    }
+
+    function clearProjectsDOM(){
+        while(cacheDOM.projectsContainer.firstChild){
+            cacheDOM.projectsContainer.removeChild(cacheDOM.projectsContainer.firstChild);
+        }
     }
     
     init();

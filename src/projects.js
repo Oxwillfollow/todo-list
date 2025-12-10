@@ -9,6 +9,8 @@ class Project {
     #tasks = [];
     
     get tasks(){
+        console.log("tasks:");
+        console.log(this.#tasks);
         return [...this.#tasks]; // return a copy of the array so the original can't be mutated
     }
     
