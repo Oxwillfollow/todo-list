@@ -1,4 +1,4 @@
-import {Task, priorities} from './tasks';
+import { Task, priorities } from './tasks';
 
 class Project {
     constructor(name, description){
@@ -56,4 +56,4 @@ const projectsManager = (function(){
     
 })();
 
-export {Project, projectsManager};
+export { Project, projectsManager };

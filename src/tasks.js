@@ -13,4 +13,4 @@ const priorities = {
     high: 2,
 }
 
-export {Task, priorities};
+export { Task, priorities };

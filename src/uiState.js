@@ -1,5 +1,3 @@
-import { addNewProject } from "./interface";
-
 const uiStateManager = (function(){
     const cacheDOM = (function(){
         // sidebar
@@ -13,6 +11,9 @@ const uiStateManager = (function(){
         const taskDialog = document.getElementById("task-dialog");
         // main
         const activeProjectContainer = document.getElementById("active-project-container");
+        const activeProjectHeader = document.getElementById("active-project-header");
+        const activeProjectDescription = document.getElementById("active-project-description");
+        const newTaskBtn = document.getElementById("new-task-btn");
 
         return{
             sidebar: {
@@ -28,9 +29,14 @@ const uiStateManager = (function(){
             },
             main: {
                 activeProjectContainer,
+                activeProjectHeader,
+                activeProjectDescription,
+                newTaskBtn,
             },
         }
     })();
+
+    let interfaceManager;
     
     function bindEvents(){
         cacheDOM.sidebar.newProjectBtn.addEventListener('click', openProjectDialog);
@@ -40,7 +46,7 @@ const uiStateManager = (function(){
 
     function saveProject(e){
         e.preventDefault();
-        addNewProject(cacheDOM.dialogs.projectNameInput.value, cacheDOM.dialogs.projectDescriptionInput.value);
+        interfaceManager.addNewProject(cacheDOM.dialogs.projectNameInput.value, cacheDOM.dialogs.projectDescriptionInput.value);
         clearProjectDialogInput();
         cacheDOM.dialogs.projectDialog.close();
     }
@@ -55,10 +61,6 @@ const uiStateManager = (function(){
         cacheDOM.dialogs.projectDescriptionInput.value = "";
     }
     
-    function init(){
-        bindEvents();
-    }
-    
     function openProjectDialog(e){
         if(e.currentTarget === cacheDOM.sidebar.newProjectBtn){
             // new project
@@ -68,16 +70,14 @@ const uiStateManager = (function(){
     
     const updateDOM = function(projectsManager){
         clearProjectsDOM();
-        clearActiveProjectDOM();
 
-        projectsManager.projects.forEach(project => {
-            createProjectDOM(project);
-        });
-
-        if(!!projectsManager.activeProject){
-            console.log("theres an active project!");
-            createActiveProjectDOM(projectsManager.activeProject);
+        if(projectsManager.projects.length > 0){
+            projectsManager.projects.forEach(project => {
+                createProjectDOM(project);
+            });
         }
+
+        updateActiveProjectDOM(projectsManager.activeProject);
     }
 
     function createProjectDOM(project){
@@ -123,32 +123,36 @@ const uiStateManager = (function(){
         }
     }
 
-    function clearActiveProjectDOM(){
-        while(cacheDOM.main.activeProjectContainer.firstChild){
-            cacheDOM.main.activeProjectContainer.removeChild(cacheDOM.main.activeProjectContainer.firstChild);
-        }
+    function clearTasksDOM(){
+        //
     }
 
-    function createActiveProjectDOM(project){
-        console.log("creating active project DOM");
-        const projectHeader = document.createElement("h2");
-        projectHeader.classList.add("project-header");
-        projectHeader.textContent = project.name;
-        const projectDescriptionPara = document.createElement("p");
-        projectDescriptionPara.classList.add("project-description");
-        projectDescriptionPara.textContent = project.description;
-
-        cacheDOM.main.activeProjectContainer.append(projectHeader, projectDescriptionPara);
+    function updateActiveProjectDOM(project){
+        if(!project){
+            cacheDOM.main.activeProjectHeader.textContent = "No Active Project";
+            cacheDOM.main.activeProjectDescription.textContent = "";
+            cacheDOM.main.newTaskBtn.textContent = "New Project";
+        }
+        else{
+            cacheDOM.main.activeProjectHeader.textContent = project.name;
+            cacheDOM.main.activeProjectDescription.textContent = project.description;
+            cacheDOM.main.newTaskBtn.textContent = "New Task";
+        }  
     }
 
     function createTaskDOM(task){
 
     }
-    
-    init();
+
+    const init = function(projectsManager, interfaceMng){
+        bindEvents();
+        updateDOM(projectsManager);
+        interfaceManager = interfaceMng;
+    }
     
     return{
         updateDOM,
+        init,
     }
 })();
 

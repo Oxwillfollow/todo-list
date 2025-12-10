@@ -1,2 +1,2 @@
 import './styles.css';
-import uiState from './uiState';
+import interfaceManager from './interface';
