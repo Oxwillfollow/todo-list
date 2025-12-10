@@ -56,4 +56,4 @@ const projectsManager = (function(){
     
 })();
 
-export { Project, projectsManager };
+export { Project, projectsManager, Task };

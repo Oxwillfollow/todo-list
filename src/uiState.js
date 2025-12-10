@@ -1,3 +1,5 @@
+import { compareAsc, format } from "date-fns";
+
 const uiStateManager = (function(){
     const cacheDOM = (function(){
         // sidebar
@@ -9,11 +11,17 @@ const uiStateManager = (function(){
         const projectDescriptionInput = document.getElementById("project-description");
         const saveProjectBtn = document.getElementById("save-project-btn");
         const taskDialog = document.getElementById("task-dialog");
+        const taskNameInput = document.getElementById("task-name");
+        const taskDueDateInput = document.getElementById("task-dueDate");
+        const taskNotesInput = document.getElementById("task-notes");
+        const taskPriorityInput = document.getElementById("task-priority");
+        const saveTaskBtn = document.getElementById("save-task-btn");
         // main
         const activeProjectContainer = document.getElementById("active-project-container");
+        const activeProjectTasksContainer = document.getElementById("active-project-tasks-container");
         const activeProjectHeader = document.getElementById("active-project-header");
         const activeProjectDescription = document.getElementById("active-project-description");
-        const newTaskBtn = document.getElementById("new-task-btn");
+        const newBtn = document.getElementById("new-btn");
 
         return{
             sidebar: {
@@ -26,12 +34,18 @@ const uiStateManager = (function(){
                 projectDescriptionInput,
                 saveProjectBtn,
                 taskDialog,
+                taskNameInput,
+                taskDueDateInput,
+                taskNotesInput,
+                taskPriorityInput,
+                saveTaskBtn,
             },
             main: {
                 activeProjectContainer,
+                activeProjectTasksContainer,
                 activeProjectHeader,
                 activeProjectDescription,
-                newTaskBtn,
+                newBtn,
             },
         }
     })();
@@ -42,42 +56,92 @@ const uiStateManager = (function(){
         cacheDOM.sidebar.newProjectBtn.addEventListener('click', openProjectDialog);
         cacheDOM.dialogs.projectDialog.addEventListener('submit', saveProject);
         cacheDOM.dialogs.projectDialog.addEventListener('close', closeProjectDialog);
+
+        cacheDOM.main.newBtn.addEventListener('click', newButtonClicked);
+        cacheDOM.dialogs.taskDialog.addEventListener('submit', saveTask);
+        cacheDOM.dialogs.taskDialog.addEventListener('close', closeTaskDialog);
     }
 
     function saveProject(e){
         e.preventDefault();
-        interfaceManager.addNewProject(cacheDOM.dialogs.projectNameInput.value, cacheDOM.dialogs.projectDescriptionInput.value);
+        interfaceManager.addNewProject(
+            cacheDOM.dialogs.projectNameInput.value,
+            cacheDOM.dialogs.projectDescriptionInput.value);
+
         clearProjectDialogInput();
         cacheDOM.dialogs.projectDialog.close();
     }
 
-    function closeProjectDialog(){
+    function saveTask(e){
+        e.preventDefault();
+        interfaceManager.addNewTask(cacheDOM.dialogs.taskNameInput.value,
+            cacheDOM.dialogs.taskDueDateInput.value,
+            cacheDOM.dialogs.taskPriorityInput.value,
+            cacheDOM.dialogs.taskNotesInput.value,
+        );
+
         clearProjectDialogInput();
-        cacheDOM.dialogs.projectDialog.close();
+        cacheDOM.dialogs.taskDialog.close();
     }
 
-    function clearProjectDialogInput(){
-        cacheDOM.dialogs.projectNameInput.value = "";
-        cacheDOM.dialogs.projectDescriptionInput.value = "";
-    }
-    
     function openProjectDialog(e){
-        if(e.currentTarget === cacheDOM.sidebar.newProjectBtn){
+        if(e.currentTarget === cacheDOM.sidebar.newProjectBtn || e.currentTarget === cacheDOM.main.newBtn){
             // new project
             cacheDOM.dialogs.projectDialog.showModal();
         }
     }
+    function closeProjectDialog(){
+        clearProjectDialogInput();
+        cacheDOM.dialogs.projectDialog.close();
+    }
+    function clearProjectDialogInput(){
+        cacheDOM.dialogs.projectNameInput.value = "";
+        cacheDOM.dialogs.projectDescriptionInput.value = "";
+    }
+
+    function newButtonClicked(e){
+        if(e.currentTarget.dataset.purpose === "project")
+            openProjectDialog(e);
+        else
+            openTaskDialog(e);
+    }
+    
+    function openTaskDialog(e){
+        if(e.currentTarget === cacheDOM.main.newBtn){
+            // new task
+            cacheDOM.dialogs.taskDialog.showModal();
+        }
+    }
+    function closeTaskDialog(){
+        clearTaskDialogInput();
+        cacheDOM.dialogs.taskDialog.close();
+    }
+    function clearTaskDialogInput(){
+        cacheDOM.dialogs.taskNameInput.value = "";
+        cacheDOM.dialogs.taskDueDateInput.value = "";
+        cacheDOM.dialogs.taskNotesInput.value = "";
+        cacheDOM.dialogs.taskPriorityInput.value = "";
+    }
     
     const updateDOM = function(projectsManager){
         clearProjectsDOM();
+        clearTasksDOM();
 
+        // display projects
         if(projectsManager.projects.length > 0){
             projectsManager.projects.forEach(project => {
                 createProjectDOM(project);
             });
         }
 
+        // display active project + tasks
         updateActiveProjectDOM(projectsManager.activeProject);
+
+        if(projectsManager.activeProject){
+            projectsManager.activeProject.tasks.forEach(task => {
+                createTaskDOM(task);
+            });
+        }
     }
 
     function createProjectDOM(project){
@@ -124,30 +188,47 @@ const uiStateManager = (function(){
     }
 
     function clearTasksDOM(){
-        //
+        while(cacheDOM.main.activeProjectTasksContainer.firstChild){
+            cacheDOM.main.activeProjectTasksContainer.removeChild(cacheDOM.main.activeProjectTasksContainer.firstChild);
+        }
     }
 
     function updateActiveProjectDOM(project){
         if(!project){
             cacheDOM.main.activeProjectHeader.textContent = "No Active Project";
             cacheDOM.main.activeProjectDescription.textContent = "";
-            cacheDOM.main.newTaskBtn.textContent = "New Project";
+            cacheDOM.main.newBtn.textContent = "New Project";
+            cacheDOM.main.newBtn.dataset.purpose = "project";
         }
         else{
             cacheDOM.main.activeProjectHeader.textContent = project.name;
             cacheDOM.main.activeProjectDescription.textContent = project.description;
-            cacheDOM.main.newTaskBtn.textContent = "New Task";
+            cacheDOM.main.newBtn.textContent = "New Task";
+            cacheDOM.main.newBtn.dataset.purpose = "task";
         }  
     }
 
     function createTaskDOM(task){
+        const taskContainer = document.createElement("div");
+        taskContainer.classList.add("active-project-task-container")
+        const taskPriority = document.createElement("div");
+        taskPriority.classList.add("active-project-task-priority");
+        taskPriority.dataset.priority = task.priority.toString();
+        const taskHeader = document.createElement("h3");
+        taskHeader.classList.add("active-project-task-header");
+        taskHeader.textContent = task.name;
+        const taskDueDatePara = document.createElement("p");
+        taskDueDatePara.classList.add("active-project-task-dueDate");
+        taskDueDatePara.textContent = format(task.dueDate, "hh:mm aa");
 
+        taskContainer.append(taskPriority, taskHeader, taskDueDatePara);
+        cacheDOM.main.activeProjectTasksContainer.appendChild(taskContainer);
     }
 
     const init = function(projectsManager, interfaceMng){
+        interfaceManager = interfaceMng;
         bindEvents();
         updateDOM(projectsManager);
-        interfaceManager = interfaceMng;
     }
     
     return{

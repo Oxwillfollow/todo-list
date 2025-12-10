@@ -1,4 +1,4 @@
-import { Project, projectsManager } from "./projects";
+import { Project, projectsManager, Task } from "./projects";
 import uiState from "./uiState";
 
 const interfaceManager = (function(){
@@ -11,8 +11,20 @@ const interfaceManager = (function(){
         uiState.updateDOM(projectsManager);
     }
 
+    function addNewTask(name, dueDate, priority, notes){
+        if(projectsManager.activeProject){
+            const newTask = new Task(name, dueDate, priority, notes);
+            projectsManager.activeProject.addTask(newTask);
+            uiState.updateDOM(projectsManager);
+        }
+        else{
+            throw new Error("TRYING TO ADD TASK WITH NO ACTIVE PROJECT");
+        }
+    }
+
     return{
         addNewProject,
+        addNewTask,
     }
 })();
 

@@ -19,7 +19,11 @@
             <div id="active-project-container">
                 <h2 id="active-project-header">No Active Project</h2>
                 <p id="active-project-description"></p>
-                <button id="new-task-btn">New Project</button>
+                <button id="new-btn" data-purpose="project">New Project</button>
+                <h2>Tasks:</h2>
+                <div id="active-project-tasks-container">
+
+                </div>
             </div>
         </div>
     </div>
@@ -37,10 +41,10 @@
             <label for="task-name">Task name:</label>
             <input type="text" id="task-name" name="task-name" required>
             <label for="task-due-date">Due date:</label>
-            <input type="datetime-local" id="task-due-date" name="task-due-date" required>
+            <input type="datetime-local" id="task-dueDate" name="task-dueDate" required>
             <label for="task-notes">Notes:</label>
             <input type="text" id="task-notes" name="task-notes">
-            <select name="tast-priority" id="tast-priority">
+            <select name="tast-priority" id="task-priority" required>
                 <option value="low">low</option>
                 <option value="medium" selected>medium</option>
                 <option value="high">high</option>
