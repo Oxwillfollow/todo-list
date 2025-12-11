@@ -1,3 +1,4 @@
+import { compareAsc } from "date-fns";
 import { Project, projectsManager, Task } from "./projects";
 import uiState from "./uiState";
 
@@ -6,6 +7,12 @@ const interfaceManager = (function(){
         const newProject = new Project(name, description);
         projectsManager.add(newProject);
         setActiveProject(newProject);
+    }
+
+    function editProject(project, name, description){
+        const editedProject = new Project(name, description);
+        project.edit(editedProject);
+        setActiveProject(editedProject);
     }
 
     function addNewTask(name, dueDate, priority, notes){
@@ -37,6 +44,7 @@ const interfaceManager = (function(){
         addNewTask,
         setActiveProject,
         toggleTaskStatus,
+        editProject,
     }
 })();
 

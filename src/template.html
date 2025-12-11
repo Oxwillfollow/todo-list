@@ -27,7 +27,7 @@
             </div>
         </div>
     </div>
-    <dialog id="project-dialog" closedby="any">
+    <dialog id="project-dialog" closedby="any" value="">
         <form>
             <label for="project-name">Project name:</label>
             <input type="text" id="project-name" name="project-name" required>
@@ -36,11 +36,11 @@
             <button type="submit" id="save-project-btn">Save</button>
         </form>
     </dialog>
-    <dialog id="task-dialog" closedby="any">
+    <dialog id="task-dialog" closedby="any" value="">
         <form>
             <label for="task-name">Task name:</label>
             <input type="text" id="task-name" name="task-name" required>
-            <label for="task-due-date">Due date:</label>
+            <label for="task-dueDate">Due date:</label>
             <input type="datetime-local" id="task-dueDate" name="task-dueDate" required>
             <label for="task-notes">Notes:</label>
             <input type="text" id="task-notes" name="task-notes">

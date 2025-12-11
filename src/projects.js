@@ -9,13 +9,21 @@ class Project {
     #tasks = [];
     
     get tasks(){
-        console.log("tasks:");
-        console.log(this.#tasks);
         return [...this.#tasks]; // return a copy of the array so the original can't be mutated
+    }
+
+    edit(editedProject){
+        this.name = editedProject.name;
+        this.description = editedProject.description;
     }
     
     addTask(task){
         this.#tasks.push(task)
+
+        // sort tasks upon addition
+        this.#tasks.sort((taskA, taskB) => {
+            return new Date(taskA.dueDate) - new Date(taskB.dueDate);
+        });
     }
     
     removeTask(task){
@@ -30,8 +38,6 @@ const projectsManager = (function(){
     
     const add = function(project){
         projects.push(project);
-        console.log("Added new project!");
-        console.log(projects);
     }
     
     const remove = function(project){
@@ -40,8 +46,6 @@ const projectsManager = (function(){
 
     const setActive = function(project){
         activeProject = project;
-        console.log("active project set");
-        console.log(activeProject);
     }
     
     return {

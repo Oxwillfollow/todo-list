@@ -1,5 +1,6 @@
-import { compareAsc, format } from "date-fns";
+import { format, isSameDay } from "date-fns";
 import checkmarkImg from "./checkmark.svg"
+import fileEditImg from "./file-edit.svg"
 
 const uiStateManager = (function(){
     const cacheDOM = (function(){
@@ -54,7 +55,7 @@ const uiStateManager = (function(){
     let interfaceManager;
     
     function bindEvents(){
-        cacheDOM.sidebar.newProjectBtn.addEventListener('click', openProjectDialog);
+        cacheDOM.sidebar.newProjectBtn.addEventListener('click', () => openProjectDialog(null));
         cacheDOM.dialogs.projectDialog.addEventListener('submit', saveProject);
         cacheDOM.dialogs.projectDialog.addEventListener('close', closeProjectDialog);
 
@@ -65,10 +66,20 @@ const uiStateManager = (function(){
 
     function saveProject(e){
         e.preventDefault();
-        interfaceManager.addNewProject(
+
+        if(cacheDOM.dialogs.projectDialog.value !== ""){
+            // edit project
+            interfaceManager.editProject(cacheDOM.dialogs.projectDialog.value,
             cacheDOM.dialogs.projectNameInput.value,
             cacheDOM.dialogs.projectDescriptionInput.value);
-
+            cacheDOM.dialogs.projectDialog.value = "";
+        }
+        else{
+            // new project
+            interfaceManager.addNewProject(
+            cacheDOM.dialogs.projectNameInput.value,
+            cacheDOM.dialogs.projectDescriptionInput.value);
+        }
         clearProjectDialogInput();
         cacheDOM.dialogs.projectDialog.close();
     }
@@ -85,10 +96,14 @@ const uiStateManager = (function(){
         cacheDOM.dialogs.taskDialog.close();
     }
 
-    function openProjectDialog(e){
-        if(e.currentTarget === cacheDOM.sidebar.newProjectBtn || e.currentTarget === cacheDOM.main.newBtn){
+    function openProjectDialog(project){
+        if(project === null){
             // new project
             cacheDOM.dialogs.projectDialog.showModal();
+        }
+        else{
+            // edit project
+            editProject(project);
         }
     }
     function closeProjectDialog(){
@@ -96,13 +111,22 @@ const uiStateManager = (function(){
         cacheDOM.dialogs.projectDialog.close();
     }
     function clearProjectDialogInput(){
+        cacheDOM.dialogs.projectDialog.value = "";
         cacheDOM.dialogs.projectNameInput.value = "";
         cacheDOM.dialogs.projectDescriptionInput.value = "";
     }
 
+    function editProject(project){
+        cacheDOM.dialogs.projectNameInput.value = project.name;
+        cacheDOM.dialogs.projectDescriptionInput.value = project.description;
+
+        cacheDOM.dialogs.projectDialog.showModal();
+        cacheDOM.dialogs.projectDialog.value = project;
+    }
+
     function newButtonClicked(e){
         if(e.currentTarget.dataset.purpose === "project")
-            openProjectDialog(e);
+            openProjectDialog(null);
         else
             openTaskDialog(e);
     }
@@ -135,12 +159,17 @@ const uiStateManager = (function(){
             });
         }
 
-        // display active project + tasks
+        // display active project
         updateActiveProjectDOM(projectsManager.activeProject);
+        
+        // display tasks by date
+        let lastTask;
+        let lastTaskDateContainer;
 
         if(projectsManager.activeProject){
             projectsManager.activeProject.tasks.forEach(task => {
-                createTaskDOM(task);
+                lastTaskDateContainer = createTaskDOM(task, lastTask, lastTaskDateContainer);
+                lastTask = task;
             });
         }
     }
@@ -148,6 +177,8 @@ const uiStateManager = (function(){
     function createProjectDOM(project){
         const projectContainer = document.createElement("div");
         projectContainer.classList.add("project-container");
+        const projectHeaderContainer = document.createElement("div");
+        projectHeaderContainer.classList.add("project-header-container");
         const projectHeader = document.createElement("h2");
         projectHeader.classList.add("project-header");
         const projectHeaderLink = document.createElement("a");
@@ -155,10 +186,20 @@ const uiStateManager = (function(){
         projectHeaderLink.textContent = project.name;
         projectHeaderLink.addEventListener("click", () => interfaceManager.setActiveProject(project));
         projectHeader.appendChild(projectHeaderLink);
-        const projectTasksContainer = document.createElement("div");
-        projectTasksContainer.classList.add("project-tasks-container");
+        
+        // edit button
+        const projectEditBtn = document.createElement("button");
+        projectEditBtn.classList.add("project-edit-btn");
+        projectEditBtn.addEventListener("click", () => openProjectDialog(project));
+        const projectEditImg = document.createElement("img");
+        projectEditImg.src = fileEditImg;
+        projectEditBtn.appendChild(projectEditImg);
+        projectHeaderContainer.append(projectHeader, projectEditBtn);
        
         // display project tasks
+        const projectTasksContainer = document.createElement("div");
+        projectTasksContainer.classList.add("project-tasks-container");
+
         if(project.tasks.length > 0){
             for (let index = 0; index <= 3; index++) {
                 const projectTaskHeader = document.createElement("h3");
@@ -181,7 +222,7 @@ const uiStateManager = (function(){
             }
         }
 
-        projectContainer.append(projectHeader, projectTasksContainer);
+        projectContainer.append(projectHeaderContainer, projectTasksContainer);
         cacheDOM.sidebar.projectsContainer.appendChild(projectContainer);
     }
 
@@ -212,7 +253,9 @@ const uiStateManager = (function(){
         }  
     }
 
-    function createTaskDOM(task){
+    function createTaskDOM(task, lastTask, lastTaskDateContainer){
+        const taskDateContainer = createTaskDateContainer(task, lastTask, lastTaskDateContainer);
+
         const taskContainer = document.createElement("div");
         taskContainer.classList.add("active-project-task-container")
         const taskCheckbox = document.createElement("div");
@@ -233,7 +276,28 @@ const uiStateManager = (function(){
 
         taskCheckbox.appendChild(taskCheckmark);
         taskContainer.append(taskCheckbox, taskHeader, taskDueDatePara);
-        cacheDOM.main.activeProjectTasksContainer.appendChild(taskContainer);
+        taskDateContainer.appendChild(taskContainer);
+        cacheDOM.main.activeProjectTasksContainer.appendChild(taskDateContainer);
+
+        return taskDateContainer;
+    }
+
+    function createTaskDateContainer(task, lastTask, lastTaskDateContainer){
+        // if last task doesn't exist or if the task isn't the same day as last task, create new container
+        // else, use the same container
+        if(!lastTask || !isSameDay(task.dueDate, lastTask.dueDate)){
+            const taskDateContainer = document.createElement("div");
+            taskDateContainer.classList.add("active-project-task-date-container");
+            const taskDateHeader = document.createElement("h3");
+            taskDateHeader.classList.add("active-project-task-date-header");
+            taskDateHeader.textContent = format(task.dueDate, "EEEE, dd-MM-yyyy");
+            taskDateContainer.appendChild(taskDateHeader);
+
+            return taskDateContainer;
+        }
+        else{
+            return lastTaskDateContainer;
+        }
     }
 
     const init = function(projectsManager, interfaceMng){
