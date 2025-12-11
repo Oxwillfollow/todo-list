@@ -19,11 +19,20 @@ const interfaceManager = (function(){
         if(projectsManager.activeProject){
             const newTask = new Task(name, dueDate, priority, notes);
             projectsManager.activeProject.addTask(newTask);
-            uiState.updateDOM(projectsManager);
+            uiState.updateDOM();
         }
         else{
             throw new Error("TRYING TO ADD TASK WITH NO ACTIVE PROJECT");
         }
+    }
+
+    function editTask(task, name, dueDate, priority, notes){
+        task.name = name;
+        task.dueDate = dueDate;
+        task.priority = priority;
+        task.notes = notes;
+        task.project.sortTasks();
+        uiState.updateDOM();
     }
 
     function setActiveProject(project){
@@ -42,6 +51,7 @@ const interfaceManager = (function(){
         setActiveProject,
         toggleTaskStatus,
         editProject,
+        editTask,
         get activeProject(){return projectsManager.activeProject;},
         get projects(){return projectsManager.projects;},
     }

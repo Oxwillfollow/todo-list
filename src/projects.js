@@ -14,8 +14,11 @@ class Project {
     
     addTask(task){
         this.#tasks.push(task)
+        this.sortTasks();
+        task.project = this;
+    }
 
-        // sort tasks upon addition
+    sortTasks(){
         this.#tasks.sort((taskA, taskB) => {
             return new Date(taskA.dueDate) - new Date(taskB.dueDate);
         });

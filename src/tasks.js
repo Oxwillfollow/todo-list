@@ -6,6 +6,8 @@ class Task {
         this.notes = notes;
         this.completed = false;
     }
+
+    project;
 }
 
 const priorities = {

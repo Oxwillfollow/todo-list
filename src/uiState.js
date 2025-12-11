@@ -2,6 +2,16 @@ import { format, isSameDay } from "date-fns";
 import checkmarkImg from "./checkmark.svg"
 import fileEditImg from "./file-edit.svg"
 
+
+///////
+////// TO DO:
+////// 1. EDIT TASKS
+////// 2. DETELE PROJECTS / DELETE TASKS
+////// 3. ICON NEXT TO TASKS -> HOVER -> DISPLAY NOTES
+////// 4. GRAY OUT TASKS WHEN COMPLETED
+////// 5. SAVE PROJECTS LOCALLY AND LOAD THEM
+////// 6. IMPROVE STYLING
+
 const uiStateManager = (function(){
     const cacheDOM = (function(){
         // sidebar
@@ -72,6 +82,7 @@ const uiStateManager = (function(){
             interfaceManager.editProject(cacheDOM.dialogs.projectDialog.value,
             cacheDOM.dialogs.projectNameInput.value,
             cacheDOM.dialogs.projectDescriptionInput.value);
+
             cacheDOM.dialogs.projectDialog.value = "";
         }
         else{
@@ -86,11 +97,25 @@ const uiStateManager = (function(){
 
     function saveTask(e){
         e.preventDefault();
-        interfaceManager.addNewTask(cacheDOM.dialogs.taskNameInput.value,
+
+        if(cacheDOM.dialogs.taskDialog.value){
+            // edit task
+            interfaceManager.editTask(cacheDOM.dialogs.taskDialog.value,
+            cacheDOM.dialogs.taskNameInput.value,
+            cacheDOM.dialogs.taskDueDateInput.value,
+            cacheDOM.dialogs.taskPriorityInput.value,
+            cacheDOM.dialogs.taskNotesInput.value);
+
+            cacheDOM.dialogs.taskDialog.value = "";
+        }
+        else{
+            // new task
+            interfaceManager.addNewTask(cacheDOM.dialogs.taskNameInput.value,
             cacheDOM.dialogs.taskDueDateInput.value,
             cacheDOM.dialogs.taskPriorityInput.value,
             cacheDOM.dialogs.taskNotesInput.value,
         );
+        }
 
         clearProjectDialogInput();
         cacheDOM.dialogs.taskDialog.close();
@@ -124,17 +149,31 @@ const uiStateManager = (function(){
         cacheDOM.dialogs.projectDialog.value = project;
     }
 
+    function editTask(task){
+        cacheDOM.dialogs.taskNameInput.value = task.name;
+        cacheDOM.dialogs.taskDueDateInput.value = task.dueDate;
+        cacheDOM.dialogs.taskPriorityInput.value = task.priority;
+        cacheDOM.dialogs.taskNotesInput.value = task.notes;
+
+        cacheDOM.dialogs.taskDialog.showModal();
+        cacheDOM.dialogs.taskDialog.value = task;
+    }
+
     function newButtonClicked(e){
         if(e.currentTarget.dataset.purpose === "project")
             openProjectDialog(null);
         else
-            openTaskDialog(e);
+            openTaskDialog(null);
     }
     
-    function openTaskDialog(e){
-        if(e.currentTarget === cacheDOM.main.newBtn){
+    function openTaskDialog(task){
+        if(task === null){
             // new task
             cacheDOM.dialogs.taskDialog.showModal();
+        }
+        else{
+            // edit task
+            editTask(task);
         }
     }
     function closeTaskDialog(){
@@ -142,6 +181,7 @@ const uiStateManager = (function(){
         cacheDOM.dialogs.taskDialog.close();
     }
     function clearTaskDialogInput(){
+        cacheDOM.dialogs.taskDialog.value = undefined;
         cacheDOM.dialogs.taskNameInput.value = "";
         cacheDOM.dialogs.taskDueDateInput.value = "";
         cacheDOM.dialogs.taskNotesInput.value = "";
@@ -276,6 +316,7 @@ const uiStateManager = (function(){
         taskCheckmark.alt = "checkmark";
         taskCheckmark.classList.add("active-project-task-checkmark");
         const taskHeader = document.createElement("h3");
+        taskHeader.addEventListener("click", () => openTaskDialog(task));
         taskHeader.classList.add("active-project-task-header");
         taskHeader.textContent = task.name;
         const taskDueDatePara = document.createElement("p");
