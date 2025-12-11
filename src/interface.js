@@ -10,9 +10,9 @@ const interfaceManager = (function(){
     }
 
     function editProject(project, name, description){
-        const editedProject = new Project(name, description);
-        project.edit(editedProject);
-        setActiveProject(editedProject);
+        project.name = name;
+        project.description = description;
+        setActiveProject(project);
     }
 
     function addNewTask(name, dueDate, priority, notes){
@@ -28,14 +28,11 @@ const interfaceManager = (function(){
 
     function setActiveProject(project){
         projectsManager.setActive(project);
-        uiState.updateDOM(projectsManager);
+        uiState.updateDOM();
     }
 
     function toggleTaskStatus(e, task){
         task.completed = !task.completed;
-
-        console.log("trying to toggle task status, currentTarget=");
-        console.log(e.currentTarget);
         e.currentTarget.dataset.completed = task.completed;
     }
 
@@ -45,9 +42,11 @@ const interfaceManager = (function(){
         setActiveProject,
         toggleTaskStatus,
         editProject,
+        get activeProject(){return projectsManager.activeProject;},
+        get projects(){return projectsManager.projects;},
     }
 })();
 
-uiState.init(projectsManager, interfaceManager);
+uiState.init(interfaceManager);
 
 export default interfaceManager;

@@ -62,6 +62,9 @@ img{
         text-decoration: none;
         color: rgb(6, 56, 121);
     }
+    a[data-active="true"]{
+        text-decoration: underline;
+    }
 }
 
 .project-edit-btn{

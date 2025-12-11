@@ -67,7 +67,7 @@ const uiStateManager = (function(){
     function saveProject(e){
         e.preventDefault();
 
-        if(cacheDOM.dialogs.projectDialog.value !== ""){
+        if(cacheDOM.dialogs.projectDialog.value){
             // edit project
             interfaceManager.editProject(cacheDOM.dialogs.projectDialog.value,
             cacheDOM.dialogs.projectNameInput.value,
@@ -111,7 +111,7 @@ const uiStateManager = (function(){
         cacheDOM.dialogs.projectDialog.close();
     }
     function clearProjectDialogInput(){
-        cacheDOM.dialogs.projectDialog.value = "";
+        cacheDOM.dialogs.projectDialog.value = undefined;
         cacheDOM.dialogs.projectNameInput.value = "";
         cacheDOM.dialogs.projectDescriptionInput.value = "";
     }
@@ -148,26 +148,26 @@ const uiStateManager = (function(){
         cacheDOM.dialogs.taskPriorityInput.value = "";
     }
     
-    const updateDOM = function(projectsManager){
+    const updateDOM = function(){
         clearProjectsDOM();
         clearTasksDOM();
 
         // display projects
-        if(projectsManager.projects.length > 0){
-            projectsManager.projects.forEach(project => {
+        if(interfaceManager.projects.length > 0){
+            interfaceManager.projects.forEach(project => {
                 createProjectDOM(project);
             });
         }
 
         // display active project
-        updateActiveProjectDOM(projectsManager.activeProject);
+        updateActiveProjectDOM(interfaceManager.activeProject);
         
         // display tasks by date
         let lastTask;
         let lastTaskDateContainer;
 
-        if(projectsManager.activeProject){
-            projectsManager.activeProject.tasks.forEach(task => {
+        if(interfaceManager.activeProject){
+            interfaceManager.activeProject.tasks.forEach(task => {
                 lastTaskDateContainer = createTaskDOM(task, lastTask, lastTaskDateContainer);
                 lastTask = task;
             });
@@ -184,6 +184,14 @@ const uiStateManager = (function(){
         const projectHeaderLink = document.createElement("a");
         projectHeaderLink.href = `#${project.name}`;
         projectHeaderLink.textContent = project.name;
+
+        console.log(interfaceManager.activeProject);
+
+        if(interfaceManager.activeProject === project)
+            projectHeaderLink.dataset.active = "true";
+        else
+            projectHeaderLink.dataset.active = "false";
+
         projectHeaderLink.addEventListener("click", () => interfaceManager.setActiveProject(project));
         projectHeader.appendChild(projectHeaderLink);
         
@@ -300,10 +308,10 @@ const uiStateManager = (function(){
         }
     }
 
-    const init = function(projectsManager, interfaceMng){
+    const init = function(interfaceMng){
         interfaceManager = interfaceMng;
         bindEvents();
-        updateDOM(projectsManager);
+        updateDOM();
     }
     
     return{

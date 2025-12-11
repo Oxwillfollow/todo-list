@@ -5,16 +5,11 @@ class Project {
         this.name = name;
         this.description = description;
     }
-    
+
     #tasks = [];
     
     get tasks(){
         return [...this.#tasks]; // return a copy of the array so the original can't be mutated
-    }
-
-    edit(editedProject){
-        this.name = editedProject.name;
-        this.description = editedProject.description;
     }
     
     addTask(task){
