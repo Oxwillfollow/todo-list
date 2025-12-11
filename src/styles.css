@@ -51,13 +51,14 @@ img{
     display: flex;
     justify-content: space-between;
     align-items: center;
-    flex-wrap: wrap;
+    gap: 16px;
 }
 
 .project-header{
-    width: 100%;
+    min-width: 0;
 
     a{
+        width: 100%;
         word-wrap: break-word;
         text-decoration: none;
         color: rgb(6, 56, 121);
@@ -74,6 +75,7 @@ img{
     display: flex;
     align-items: center;
     justify-content: center;
+    flex-shrink: 0;
 
     img{
         width: 18px;
