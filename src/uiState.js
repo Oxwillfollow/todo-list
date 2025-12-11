@@ -1,4 +1,5 @@
 import { compareAsc, format } from "date-fns";
+import checkmarkImg from "./checkmark.svg"
 
 const uiStateManager = (function(){
     const cacheDOM = (function(){
@@ -145,12 +146,15 @@ const uiStateManager = (function(){
     }
 
     function createProjectDOM(project){
-        console.log("creating project DOM");
         const projectContainer = document.createElement("div");
         projectContainer.classList.add("project-container");
         const projectHeader = document.createElement("h2");
         projectHeader.classList.add("project-header");
-        projectHeader.textContent = project.name;
+        const projectHeaderLink = document.createElement("a");
+        projectHeaderLink.href = `#${project.name}`;
+        projectHeaderLink.textContent = project.name;
+        projectHeaderLink.addEventListener("click", () => interfaceManager.setActiveProject(project));
+        projectHeader.appendChild(projectHeaderLink);
         const projectTasksContainer = document.createElement("div");
         projectTasksContainer.classList.add("project-tasks-container");
        
@@ -167,7 +171,7 @@ const uiStateManager = (function(){
                         break;
                     }
                     else{
-                        projectTaskHeader.textContent = `${project.tasks[index].name}`;
+                        projectTaskHeader.textContent = `#${project.tasks[index].name}`;
                         projectTasksContainer.appendChild(projectTaskHeader);
                     }
                 }
@@ -211,9 +215,15 @@ const uiStateManager = (function(){
     function createTaskDOM(task){
         const taskContainer = document.createElement("div");
         taskContainer.classList.add("active-project-task-container")
-        const taskPriority = document.createElement("div");
-        taskPriority.classList.add("active-project-task-priority");
-        taskPriority.dataset.priority = task.priority.toString();
+        const taskCheckbox = document.createElement("div");
+        taskCheckbox.classList.add("active-project-task-checkbox");
+        taskCheckbox.dataset.priority = task.priority.toString();
+        taskCheckbox.dataset.completed = task.completed.toString();
+        taskCheckbox.addEventListener("click", (e) => interfaceManager.toggleTaskStatus(e, task));
+        const taskCheckmark = document.createElement("img")
+        taskCheckmark.src = checkmarkImg;
+        taskCheckmark.alt = "checkmark";
+        taskCheckmark.classList.add("active-project-task-checkmark");
         const taskHeader = document.createElement("h3");
         taskHeader.classList.add("active-project-task-header");
         taskHeader.textContent = task.name;
@@ -221,7 +231,8 @@ const uiStateManager = (function(){
         taskDueDatePara.classList.add("active-project-task-dueDate");
         taskDueDatePara.textContent = format(task.dueDate, "hh:mm aa");
 
-        taskContainer.append(taskPriority, taskHeader, taskDueDatePara);
+        taskCheckbox.appendChild(taskCheckmark);
+        taskContainer.append(taskCheckbox, taskHeader, taskDueDatePara);
         cacheDOM.main.activeProjectTasksContainer.appendChild(taskContainer);
     }
 

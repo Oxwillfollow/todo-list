@@ -8,12 +8,17 @@ body{
     min-height: 100%;
 }
 #sidebar{
-    flex-grow: 1;
+    width: 20%;
     background-color: rgb(166, 206, 207);
 }
 #main{
-    flex-grow: 6;
+    flex-grow: 1;
     background-color: bisque;
+}
+#active-project-container{
+    display: grid;
+    grid-auto-rows: 64px;
+    align-items: center;
 }
 
 #sidebar, #main{
@@ -41,6 +46,16 @@ button{
     }
 }
 
+.project-task-header{
+    font-size: 1.1rem;
+    font-weight: 300;
+}
+
+#new-btn{
+    width: 128px;
+    height: 32px;
+}
+
 .active-project-task-container{
     display: grid;
     align-items: center;
@@ -57,21 +72,28 @@ button{
         color: green;
     }
 
-    .active-project-task-priority{
+    .active-project-task-checkbox{
         width: 24px;
         height: 24px;
         border-radius: 16px;
         border: 2px solid black;
         justify-self: center;
+        cursor: pointer;
     }
 
-    div[data-priority="low"]{
+    .active-project-task-checkbox[data-completed="false"]{
+        .active-project-task-checkmark{
+            display: none;
+        }
+    }
+
+    .active-project-task-checkbox[data-priority="low"]{
         background-color: yellow;
     }
-    div[data-priority="medium"]{
+    .active-project-task-checkbox[data-priority="medium"]{
         background-color: cyan;
     }
-    div[data-priority="high"]{
+    .active-project-task-checkbox[data-priority="high"]{
         background-color: red;
     }
 }

@@ -5,10 +5,7 @@ const interfaceManager = (function(){
     function addNewProject(name, description){
         const newProject = new Project(name, description);
         projectsManager.add(newProject);
-        if(!projectsManager.activeProject)
-            projectsManager.setActive(newProject);
-
-        uiState.updateDOM(projectsManager);
+        setActiveProject(newProject);
     }
 
     function addNewTask(name, dueDate, priority, notes){
@@ -22,9 +19,24 @@ const interfaceManager = (function(){
         }
     }
 
+    function setActiveProject(project){
+        projectsManager.setActive(project);
+        uiState.updateDOM(projectsManager);
+    }
+
+    function toggleTaskStatus(e, task){
+        task.completed = !task.completed;
+
+        console.log("trying to toggle task status, currentTarget=");
+        console.log(e.currentTarget);
+        e.currentTarget.dataset.completed = task.completed;
+    }
+
     return{
         addNewProject,
         addNewTask,
+        setActiveProject,
+        toggleTaskStatus,
     }
 })();
 
