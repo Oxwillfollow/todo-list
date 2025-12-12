@@ -15,6 +15,23 @@ const interfaceManager = (function(){
         setActiveProject(project);
     }
 
+    function removeProject(project){ 
+        projectsManager.remove(project);
+        if(project === projectsManager.activeProject){
+            if(projectsManager.projects.length > 0){
+                projectsManager.setActive(projectsManager.projects.at(-1));
+            }
+            else
+                projectsManager.setActive(null);
+        }
+        uiState.updateDOM();
+    }
+
+    function removeTask(task){
+        task.project.removeTask(task);
+        uiState.updateDOM();
+    }
+
     function addNewTask(name, dueDate, priority, notes){
         if(projectsManager.activeProject){
             const newTask = new Task(name, dueDate, priority, notes);
@@ -52,6 +69,8 @@ const interfaceManager = (function(){
         toggleTaskStatus,
         editProject,
         editTask,
+        removeProject,
+        removeTask,
         get activeProject(){return projectsManager.activeProject;},
         get projects(){return projectsManager.projects;},
     }

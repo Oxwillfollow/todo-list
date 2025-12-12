@@ -1,12 +1,13 @@
 import { format, isSameDay } from "date-fns";
 import checkmarkImg from "./checkmark.svg"
 import fileEditImg from "./file-edit.svg"
+import removeImg from "./remove.svg"
 
 
 ///////
 ////// TO DO:
-////// 1. EDIT TASKS
-////// 2. DETELE PROJECTS / DELETE TASKS
+
+////// 2. Remove PROJECTS / Remove TASKS
 ////// 3. ICON NEXT TO TASKS -> HOVER -> DISPLAY NOTES
 ////// 4. GRAY OUT TASKS WHEN COMPLETED
 ////// 5. SAVE PROJECTS LOCALLY AND LOAD THEM
@@ -235,6 +236,9 @@ const uiStateManager = (function(){
         projectHeaderLink.addEventListener("click", () => interfaceManager.setActiveProject(project));
         projectHeader.appendChild(projectHeaderLink);
         
+        //
+        const projectButtonContainer = document.createElement("div");
+        projectButtonContainer.classList.add("project-btn-container");
         // edit button
         const projectEditBtn = document.createElement("button");
         projectEditBtn.classList.add("project-edit-btn");
@@ -242,7 +246,17 @@ const uiStateManager = (function(){
         const projectEditImg = document.createElement("img");
         projectEditImg.src = fileEditImg;
         projectEditBtn.appendChild(projectEditImg);
-        projectHeaderContainer.append(projectHeader, projectEditBtn);
+
+        // remove button
+        const projectRemoveBtn = document.createElement("button");
+        projectRemoveBtn.classList.add("project-remove-btn");
+        projectRemoveBtn.addEventListener("click", () => interfaceManager.removeProject(project));
+        const projectRemoveImg = document.createElement("img");
+        projectRemoveImg.src = removeImg;
+        projectRemoveBtn.appendChild(projectRemoveImg);
+
+        projectButtonContainer.append(projectEditBtn, projectRemoveBtn);
+        projectHeaderContainer.append(projectHeader, projectButtonContainer);
        
         // display project tasks
         const projectTasksContainer = document.createElement("div");

@@ -49,9 +49,20 @@ img{
 
 .project-header-container{
     display: flex;
-    justify-content: space-between;
     align-items: center;
     gap: 16px;
+}
+
+h1 {
+    font-weight: 800;
+}
+
+h2 {
+    font-weight: 700;
+}
+
+h3 {
+    font-weight: 600;
 }
 
 .project-header{
@@ -61,31 +72,41 @@ img{
         width: 100%;
         word-wrap: break-word;
         text-decoration: none;
-        color: rgb(6, 56, 121);
+        color: rgb(24, 24, 24);
     }
     a[data-active="true"]{
         text-decoration: underline;
     }
 }
 
-.project-edit-btn{
-    width: 32px;
-    height: 32px;
+.project-btn-container{
+    display: flex;
+    gap: 8px;
+}
+
+.project-edit-btn,
+.project-remove-btn{
+    width: 24px;
+    height: 24px;
     padding: 0;
     display: flex;
     align-items: center;
     justify-content: center;
     flex-shrink: 0;
+    background-color: inherit;
+    border: 0;
 
     img{
         width: 18px;
         height: 18px;
+        opacity: 60%;
     }
 }
 
 .project-task-header{
     font-size: 1.1rem;
     font-weight: 300;
+    color: rgb(66, 66, 66);
 }
 
 #new-btn{
