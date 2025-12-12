@@ -82,14 +82,20 @@ img{
 
 .sidebar-header{
     #new-project-btn{
-        background-color: rgb(146, 255, 146);
+        display: flex;
+        align-items: center;
+        justify-content: center;
         font-size: 2rem;
         font-weight: bold;
         width: 32px;
         height: 32px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
+        border: 0;
+        border-radius: 8px;
+        background-color: rgb(223, 255, 255);
+    }
+    #new-project-btn:hover{
+        box-shadow: 0 2px 2px rgb(122, 122, 122);
+        background-color: rgb(235, 255, 255);
     }
 }
 
@@ -110,6 +116,7 @@ h2 {
 
 h3 {
     font-weight: 600;
+    margin: 0;
 }
 
 .project-header{
@@ -160,6 +167,19 @@ h3 {
 #new-btn{
     width: 128px;
     height: 32px;
+    border: 0;
+    border-radius: 8px;
+    background-color: rgb(223, 255, 255);
+}
+
+#new-btn:hover{
+    box-shadow: 0 2px 2px rgb(122, 122, 122);
+    background-color: rgb(235, 255, 255);
+
+}
+
+.active-project-task-checkbox[data-completed="true"]+.active-project-task-header-container{
+    text-decoration: line-through;
 }
 
 .active-project-task-container{
@@ -193,15 +213,14 @@ h3 {
             display: none;
         }
     }
-
     .active-project-task-checkbox[data-priority="low"]{
-        background-color: yellow;
+        background-color: rgb(255, 249, 164);
     }
     .active-project-task-checkbox[data-priority="medium"]{
-        background-color: cyan;
+        background-color: rgb(255, 203, 143);
     }
     .active-project-task-checkbox[data-priority="high"]{
-        background-color: red;
+        background-color: rgb(255, 147, 147);
     }
 }
 

@@ -6,12 +6,8 @@ import removeImg from "./remove.svg"
 
 ///////
 ////// TO DO:
-
-////// 2. Remove PROJECTS / Remove TASKS
 ////// 3. ICON NEXT TO TASKS -> HOVER -> DISPLAY NOTES
-////// 4. GRAY OUT TASKS WHEN COMPLETED
 ////// 4.5 ADD LEGEND TO EXPLAIN PRIORITY COLORS
-////// 4.6 ALLOW TO ADD TASKS WITHOUT TIME, JUST THE DAY
 ////// 5. SAVE PROJECTS LOCALLY AND LOAD THEM
 ////// 6. IMPROVE STYLING
 
@@ -341,7 +337,7 @@ const uiStateManager = (function(){
         taskHeader.textContent = task.name;
         const taskDueDatePara = document.createElement("p");
         taskDueDatePara.classList.add("active-project-task-dueDate");
-        taskDueDatePara.textContent = task.dueTime ? `due at: ${task.dueTime}` : "";
+        taskDueDatePara.textContent = task.dueTime ? `Due at: ${task.dueTime}` : "";
 
         // remove button
         const taskRemoveBtn = document.createElement("button");
@@ -373,7 +369,7 @@ const uiStateManager = (function(){
         if(!lastTask || !isSameDay(task.dueDate, lastTask.dueDate)){
             const taskDateContainer = document.createElement("div");
             taskDateContainer.classList.add("active-project-task-date-container");
-            const taskDateHeader = document.createElement("h3");
+            const taskDateHeader = document.createElement("h2");
             taskDateHeader.classList.add("active-project-task-date-header");
             taskDateHeader.textContent = format(task.dueDate, "EEEE, dd-MM-yyyy");
             taskDateContainer.appendChild(taskDateHeader);
