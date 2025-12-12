@@ -6,10 +6,10 @@ import removeImg from "./remove.svg"
 
 ///////
 ////// TO DO:
-////// 3. ICON NEXT TO TASKS -> HOVER -> DISPLAY NOTES
-////// 4.5 ADD LEGEND TO EXPLAIN PRIORITY COLORS
-////// 5. SAVE PROJECTS LOCALLY AND LOAD THEM
-////// 6. IMPROVE STYLING
+////// 1. ICON NEXT TO TASKS -> HOVER -> DISPLAY NOTES
+////// 2. ADD LEGEND TO EXPLAIN PRIORITY COLORS
+////// 3. SAVE PROJECTS LOCALLY AND LOAD THEM
+////// 4. IMPROVE STYLING
 
 const uiStateManager = (function(){
     const cacheDOM = (function(){

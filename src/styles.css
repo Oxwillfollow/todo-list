@@ -1,5 +1,11 @@
 @import '../node_modules/modern-normalize/modern-normalize.css';
-
+:root{
+    --first-color: #3a717a;
+    --second-color: #62a1b3;
+    --third-color: #84d2e6;
+    --fourth-color:  #f1d18a;
+    --fifth-color: #80dbf1;
+}
 body{
     height: 100vh;
 }
@@ -9,15 +15,15 @@ body{
     grid: 1fr 24px / 1fr 5fr
 }
 #sidebar{
-    background-color: rgb(166, 206, 207);
+    background-color: var(--second-color);
     grid-area: 1/1 / 3/2;
 }
 #main{
-    background-color: bisque;
+    background-color: var(--fourth-color);
 }
 footer{
     grid-area: 2/2 / 3/3;
-    background-color: bisque;
+    background-color: var(--fourth-color);
     width: 100%;
     height: 100%;
     display: flex;
@@ -42,10 +48,10 @@ footer{
 
 #project-dialog,
 #task-dialog{
-    background-color: rgb(203, 215, 228);
+    background-color: var(--third-color);
     border-radius: 16px;
     border: 0;
-    box-shadow: 0 4px 4px rgb(83, 88, 116);
+    box-shadow: 0 4px 4px var(--first-color);
     min-width: 320px;
 }
 
@@ -64,6 +70,17 @@ footer{
 
     button{
         margin-top: 16px;
+        background-color: var(--fourth-color);
+        border: 0;
+        box-shadow: 0 1px 1px var(--first-color);
+        border-radius: 8px;
+        padding: 8px;
+        font-weight: 600;
+    }
+
+    button:hover{
+        box-shadow: 0 2px 2px var(--first-color);
+        translate: 0 -1px;
     }
 }
 
@@ -91,11 +108,14 @@ img{
         height: 32px;
         border: 0;
         border-radius: 8px;
-        background-color: rgb(223, 255, 255);
+        background-color: var(--third-color);
+        box-shadow: 0 1px 1px var(--first-color);
+        user-select: none;
     }
     #new-project-btn:hover{
-        box-shadow: 0 2px 2px rgb(122, 122, 122);
-        background-color: rgb(235, 255, 255);
+        background-color: var(--fifth-color);
+        box-shadow: 0 2px 2px var(--first-color);
+        translate: 0 -1px;
     }
 }
 
@@ -126,7 +146,7 @@ h3 {
         width: 100%;
         word-wrap: break-word;
         text-decoration: none;
-        color: rgb(24, 24, 24);
+        color: black;
     }
     a[data-active="true"]{
         text-decoration: underline;
@@ -161,7 +181,6 @@ h3 {
 .project-task-header{
     font-size: 1.1rem;
     font-weight: 300;
-    color: rgb(66, 66, 66);
 }
 
 #new-btn{
@@ -169,13 +188,14 @@ h3 {
     height: 32px;
     border: 0;
     border-radius: 8px;
-    background-color: rgb(223, 255, 255);
+    background-color: var(--third-color);
+    box-shadow: 0 1px 1px var(--first-color);
 }
 
 #new-btn:hover{
-    box-shadow: 0 2px 2px rgb(122, 122, 122);
-    background-color: rgb(235, 255, 255);
-
+    background-color: var(--fifth-color);
+    box-shadow: 0 2px 2px var(--first-color);
+    translate: 0 -1px;
 }
 
 .active-project-task-checkbox[data-completed="true"]+.active-project-task-header-container{
@@ -191,6 +211,10 @@ h3 {
     .active-project-task-header{
         margin: 0;
         cursor: pointer;
+    }
+
+    .active-project-task-header:hover{
+        color: rgb(255, 81, 28);
     }
 
     .active-project-task-dueDate{
