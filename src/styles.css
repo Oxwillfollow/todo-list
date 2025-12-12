@@ -47,7 +47,8 @@ img{
     }
 }
 
-.project-header-container{
+.project-header-container,
+.active-project-task-header-container {
     display: flex;
     align-items: center;
     gap: 16px;
@@ -85,7 +86,8 @@ h3 {
 }
 
 .project-edit-btn,
-.project-remove-btn{
+.project-remove-btn,
+.active-project-task-remove-btn{
     width: 24px;
     height: 24px;
     padding: 0;

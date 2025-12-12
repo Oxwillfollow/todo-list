@@ -10,6 +10,8 @@ import removeImg from "./remove.svg"
 ////// 2. Remove PROJECTS / Remove TASKS
 ////// 3. ICON NEXT TO TASKS -> HOVER -> DISPLAY NOTES
 ////// 4. GRAY OUT TASKS WHEN COMPLETED
+////// 4.5 ADD LEGEND TO EXPLAIN PRIORITY COLORS
+////// 4.6 ALLOW TO ADD TASKS WITHOUT TIME, JUST THE DAY
 ////// 5. SAVE PROJECTS LOCALLY AND LOAD THEM
 ////// 6. IMPROVE STYLING
 
@@ -236,7 +238,7 @@ const uiStateManager = (function(){
         projectHeaderLink.addEventListener("click", () => interfaceManager.setActiveProject(project));
         projectHeader.appendChild(projectHeaderLink);
         
-        //
+        // button container
         const projectButtonContainer = document.createElement("div");
         projectButtonContainer.classList.add("project-btn-container");
         // edit button
@@ -337,8 +339,24 @@ const uiStateManager = (function(){
         taskDueDatePara.classList.add("active-project-task-dueDate");
         taskDueDatePara.textContent = format(task.dueDate, "hh:mm aa");
 
+        // remove button
+        const taskRemoveBtn = document.createElement("button");
+        taskRemoveBtn.classList.add("active-project-task-remove-btn");
+        taskRemoveBtn.addEventListener("click", () => interfaceManager.removeTask(task));
+        const taskRemoveImg = document.createElement("img");
+        taskRemoveImg.src = removeImg;
+        taskRemoveBtn.appendChild(taskRemoveImg);
+        // button container
+        const taskButtonContainer = document.createElement("div");
+        taskButtonContainer.classList.add("active-project-task-btn-container");
+        taskButtonContainer.appendChild(taskRemoveBtn);
+        // header container
+        const taskHeaderContainer = document.createElement("div");
+        taskHeaderContainer.classList.add("active-project-task-header-container");
+        taskHeaderContainer.append(taskHeader, taskButtonContainer);
+
         taskCheckbox.appendChild(taskCheckmark);
-        taskContainer.append(taskCheckbox, taskHeader, taskDueDatePara);
+        taskContainer.append(taskCheckbox, taskHeaderContainer, taskDueDatePara);
         taskDateContainer.appendChild(taskContainer);
         cacheDOM.main.activeProjectTasksContainer.appendChild(taskDateContainer);
 
