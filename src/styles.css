@@ -40,6 +40,38 @@ footer{
     padding: 16px 32px;
 }
 
+#project-dialog,
+#task-dialog{
+    background-color: rgb(203, 215, 228);
+    border-radius: 16px;
+    border: 0;
+    box-shadow: 0 4px 4px rgb(83, 88, 116);
+    min-width: 320px;
+}
+
+#project-dialog > form,
+#task-dialog > form{
+    display: grid;
+    gap: 8px;
+
+    label{
+        font-weight: 600;
+        margin-top: 8px;
+    }
+    label:first-child{
+        margin-top: 0;
+    }
+
+    button{
+        margin-top: 16px;
+    }
+}
+
+#task-notes{
+    resize: none;
+    height: 128px;
+}
+
 button{
     cursor: pointer;
 }

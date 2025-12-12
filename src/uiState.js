@@ -28,6 +28,7 @@ const uiStateManager = (function(){
         const taskDialog = document.getElementById("task-dialog");
         const taskNameInput = document.getElementById("task-name");
         const taskDueDateInput = document.getElementById("task-dueDate");
+        const taskDueTimeInput = document.getElementById("task-dueTime");
         const taskNotesInput = document.getElementById("task-notes");
         const taskPriorityInput = document.getElementById("task-priority");
         const saveTaskBtn = document.getElementById("save-task-btn");
@@ -51,6 +52,7 @@ const uiStateManager = (function(){
                 taskDialog,
                 taskNameInput,
                 taskDueDateInput,
+                taskDueTimeInput,
                 taskNotesInput,
                 taskPriorityInput,
                 saveTaskBtn,
@@ -106,6 +108,7 @@ const uiStateManager = (function(){
             interfaceManager.editTask(cacheDOM.dialogs.taskDialog.value,
             cacheDOM.dialogs.taskNameInput.value,
             cacheDOM.dialogs.taskDueDateInput.value,
+            cacheDOM.dialogs.taskDueTimeInput.value,
             cacheDOM.dialogs.taskPriorityInput.value,
             cacheDOM.dialogs.taskNotesInput.value);
 
@@ -115,6 +118,7 @@ const uiStateManager = (function(){
             // new task
             interfaceManager.addNewTask(cacheDOM.dialogs.taskNameInput.value,
             cacheDOM.dialogs.taskDueDateInput.value,
+            cacheDOM.dialogs.taskDueTimeInput.value,
             cacheDOM.dialogs.taskPriorityInput.value,
             cacheDOM.dialogs.taskNotesInput.value,
         );
@@ -155,6 +159,7 @@ const uiStateManager = (function(){
     function editTask(task){
         cacheDOM.dialogs.taskNameInput.value = task.name;
         cacheDOM.dialogs.taskDueDateInput.value = task.dueDate;
+        cacheDOM.dialogs.taskDueTimeInput.value = task.dueTime;
         cacheDOM.dialogs.taskPriorityInput.value = task.priority;
         cacheDOM.dialogs.taskNotesInput.value = task.notes;
 
@@ -187,6 +192,7 @@ const uiStateManager = (function(){
         cacheDOM.dialogs.taskDialog.value = undefined;
         cacheDOM.dialogs.taskNameInput.value = "";
         cacheDOM.dialogs.taskDueDateInput.value = "";
+        cacheDOM.dialogs.taskDueTimeInput.value = "";
         cacheDOM.dialogs.taskNotesInput.value = "";
         cacheDOM.dialogs.taskPriorityInput.value = "";
     }
@@ -227,8 +233,6 @@ const uiStateManager = (function(){
         const projectHeaderLink = document.createElement("a");
         projectHeaderLink.href = `#${project.name}`;
         projectHeaderLink.textContent = project.name;
-
-        console.log(interfaceManager.activeProject);
 
         if(interfaceManager.activeProject === project)
             projectHeaderLink.dataset.active = "true";
@@ -337,7 +341,7 @@ const uiStateManager = (function(){
         taskHeader.textContent = task.name;
         const taskDueDatePara = document.createElement("p");
         taskDueDatePara.classList.add("active-project-task-dueDate");
-        taskDueDatePara.textContent = format(task.dueDate, "hh:mm aa");
+        taskDueDatePara.textContent = task.dueTime ? `due at: ${task.dueTime}` : "";
 
         // remove button
         const taskRemoveBtn = document.createElement("button");

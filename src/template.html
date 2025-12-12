@@ -27,7 +27,7 @@
             </div>
         </div>
         <footer>
-            <p>Made by <a href="https://github.com/Oxwillfollow" target="_blank">Oxwillfollow</a></p>
+            <p>Made by <a href="https://github.com/Oxwillfollow" target="_blank">Oxwillfollow</a> © 2025</p>
         </footer>
     </div>
     <dialog id="project-dialog" closedby="any">
@@ -44,10 +44,13 @@
             <label for="task-name">Task name:</label>
             <input type="text" id="task-name" name="task-name" required>
             <label for="task-dueDate">Due date:</label>
-            <input type="datetime-local" id="task-dueDate" name="task-dueDate" required>
-            <label for="task-notes">Notes:</label>
-            <input type="text" id="task-notes" name="task-notes">
-            <select name="tast-priority" id="task-priority" required>
+            <input type="date" id="task-dueDate" name="task-dueDate" required>
+            <label for="task-dueTime">Due time (optional):</label>
+            <input type="time" id="task-dueTime" name="task-dueTime">
+            <label for="task-notes">Notes (optional):</label>
+            <textarea id="task-notes" name="task-notes"></textarea>
+            <label for="task-priority">Priority:</label>
+            <select name="task-priority" id="task-priority" required>
                 <option value="low">low</option>
                 <option value="medium" selected>medium</option>
                 <option value="high">high</option>

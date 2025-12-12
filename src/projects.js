@@ -20,7 +20,17 @@ class Project {
 
     sortTasks(){
         this.#tasks.sort((taskA, taskB) => {
-            return new Date(taskA.dueDate) - new Date(taskB.dueDate);
+            // add date + time, then sort
+            let dateAndTimeA = `${taskA.dueDate}T${taskA.dueTime}`;
+            let dateAndTimeB = `${taskB.dueDate}T${taskB.dueTime}`;
+
+            // if no time selected, move it to the last slot of the day
+            if(!taskA.dueTime)
+                dateAndTimeA += "23:59:59";
+            if(!taskB.dueTime)
+                dateAndTimeB += "23:59:59";
+            
+            return new Date(dateAndTimeA) - new Date(dateAndTimeB);
         });
     }
     

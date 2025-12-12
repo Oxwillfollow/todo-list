@@ -32,9 +32,9 @@ const interfaceManager = (function(){
         uiState.updateDOM();
     }
 
-    function addNewTask(name, dueDate, priority, notes){
+    function addNewTask(name, dueDate, dueTime, priority, notes){
         if(projectsManager.activeProject){
-            const newTask = new Task(name, dueDate, priority, notes);
+            const newTask = new Task(name, dueDate, dueTime, priority, notes);
             projectsManager.activeProject.addTask(newTask);
             uiState.updateDOM();
         }
@@ -43,9 +43,10 @@ const interfaceManager = (function(){
         }
     }
 
-    function editTask(task, name, dueDate, priority, notes){
+    function editTask(task, name, dueDate, dueTime, priority, notes){
         task.name = name;
         task.dueDate = dueDate;
+        task.dueTime = dueTime;
         task.priority = priority;
         task.notes = notes;
         task.project.sortTasks();
