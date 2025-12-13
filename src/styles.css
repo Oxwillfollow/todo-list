@@ -1,7 +1,7 @@
 @import '../node_modules/modern-normalize/modern-normalize.css';
 :root{
     --first-color: #3a717a;
-    --second-color: #62a1b3;
+    --second-color: #6dbacf;
     --third-color: #84d2e6;
     --fourth-color:  #f1d18a;
     --fifth-color: #80dbf1;
@@ -12,11 +12,13 @@ body{
 #top-container{
     display: grid;
     min-height: 100%;
-    grid: 1fr 24px / 1fr 5fr
+    grid: 1fr 24px / 1fr 4fr
 }
 #sidebar{
     background-color: var(--second-color);
     grid-area: 1/1 / 3/2;
+    border-right: 6px solid var(--first-color);
+    min-width: 400px;
 }
 #main{
     background-color: var(--fourth-color);
@@ -87,6 +89,17 @@ footer{
 #task-notes{
     resize: none;
     height: 128px;
+}
+
+#task-dueTime,
+#task-notes{
+    background-color: rgb(224, 224, 224);
+}
+
+
+label[for="task-notes"],
+label[for="task-dueTime"]{
+    font-style: italic;
 }
 
 button{
@@ -202,11 +215,20 @@ h3 {
     text-decoration: line-through;
 }
 
+.active-project-task-date-container{
+    border-top: 4px solid var(--first-color);
+    padding: 8px;
+}
+
+.active-project-task-date-header{
+    margin: 8px 0;
+}
+
 .active-project-task-container{
     display: grid;
     align-items: center;
-    grid: 1fr 1fr / 32px 1fr;
-    gap: 16px;
+    grid: 1fr 1fr / 48px 1fr;
+    padding: 8px;
 
     .active-project-task-header{
         margin: 0;
@@ -228,7 +250,6 @@ h3 {
         height: 24px;
         border-radius: 16px;
         border: 2px solid black;
-        justify-self: center;
         cursor: pointer;
     }
 
@@ -238,13 +259,13 @@ h3 {
         }
     }
     .active-project-task-checkbox[data-priority="low"]{
-        background-color: rgb(255, 249, 164);
+        background-color: #ffd17d;
     }
     .active-project-task-checkbox[data-priority="medium"]{
-        background-color: rgb(255, 203, 143);
+        background-color: #ffae80;
     }
     .active-project-task-checkbox[data-priority="high"]{
-        background-color: rgb(255, 147, 147);
+        background-color: rgb(255, 123, 123);
     }
 }
 

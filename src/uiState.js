@@ -174,6 +174,7 @@ const uiStateManager = (function(){
         if(task === null){
             // new task
             cacheDOM.dialogs.taskDialog.showModal();
+            console.log(cacheDOM.dialogs.taskPriorityInput.options);
         }
         else{
             // edit task
@@ -191,6 +192,7 @@ const uiStateManager = (function(){
         cacheDOM.dialogs.taskDueTimeInput.value = "";
         cacheDOM.dialogs.taskNotesInput.value = "";
         cacheDOM.dialogs.taskPriorityInput.value = "";
+        cacheDOM.dialogs.taskPriorityInput.options.selectedIndex = 1;
     }
     
     const updateDOM = function(){

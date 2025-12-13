@@ -1,4 +1,3 @@
-import { compareAsc } from "date-fns";
 import { Project, projectsManager, Task } from "./projects";
 import uiState from "./uiState";
 import storage from "./storage";
@@ -19,16 +18,18 @@ const interfaceManager = (function(){
     }
 
     function removeProject(project){ 
+        // important to remove from storage first, because im setting new active ID later
+        storage.removeProject(project);
         projectsManager.remove(project);
         if(project === projectsManager.activeProject){
             if(projectsManager.projects.length > 0){
                 projectsManager.setActive(projectsManager.projects.at(-1));
+                storage.saveActiveProjectID(projectsManager.projects.at(-1));
             }
             else
                 projectsManager.setActive(null);
         }
         uiState.updateDOM();
-        storage.removeProject(project);
     }
 
     function removeTask(task){
@@ -62,7 +63,7 @@ const interfaceManager = (function(){
 
     function setActiveProject(project){
         projectsManager.setActive(project);
-        storage.saveActiveProject(project);
+        storage.saveActiveProjectID(project);
         uiState.updateDOM();
     }
 
@@ -73,13 +74,13 @@ const interfaceManager = (function(){
     }
 
     function loadStorage(){
-        if(storage.getDeserializedStorage.projects === null)
+        if(storage.getDeserialized.projects === null)
             return;
 
-        if(storage.getDeserializedStorage.projects.length <= 0)
+        if(storage.getDeserialized.projects.length <= 0)
             return;
 
-        storage.getDeserializedStorage.projects.forEach(project => {
+        storage.getDeserialized.projects.forEach(project => {
             if(projectsManager.projects.find(p => p.uniqueID === project.uniqueID) === undefined){
                 // create a new project so it inherits all the fields of the Project class (such as tasks)
                 const newProject = new Project(project.name, project.description);
@@ -87,13 +88,13 @@ const interfaceManager = (function(){
                 projectsManager.add(newProject);
 
                 // check if the project is saved as the active project
-                if(storage.getDeserializedStorage.activeProject.uniqueID === project.uniqueID)
+                if(storage.getDeserialized.activeProjectID === project.uniqueID)
                     projectsManager.setActive(newProject);
 
                 // add tasks to that project
-                if(storage.getDeserializedStorage.tasks !== null){
-                    if(storage.getDeserializedStorage.tasks.length > 0){
-                        storage.getDeserializedStorage.tasks.forEach(task => {
+                if(storage.getDeserialized.tasks !== null){
+                    if(storage.getDeserialized.tasks.length > 0){
+                        storage.getDeserialized.tasks.forEach(task => {
                             // check if the tasks project is the same and check if its not already added
                             if(task.project.uniqueID === project.uniqueID)
                                 newProject.addTask(task);
