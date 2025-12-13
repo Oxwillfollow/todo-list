@@ -6,15 +6,10 @@ class Task {
         this.priority = priority;
         this.notes = notes;
         this.completed = false;
+        this.uniqueID = crypto.randomUUID(); // unique ID used for storage purposes
     }
 
     project;
 }
 
-const priorities = {
-    low: 0,
-    medium: 1,
-    high: 2,
-}
-
-export { Task, priorities };
+export { Task };

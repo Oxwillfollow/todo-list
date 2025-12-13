@@ -1,7 +1,7 @@
-import { format, isSameDay } from "date-fns";
-import checkmarkImg from "./checkmark.svg"
-import fileEditImg from "./file-edit.svg"
-import removeImg from "./remove.svg"
+import { format } from "date-fns";
+import checkmarkImg from "./checkmark.svg";
+import fileEditImg from "./file-edit.svg";
+import removeImg from "./remove.svg";
 
 
 ///////
@@ -366,7 +366,7 @@ const uiStateManager = (function(){
     function createTaskDateContainer(task, lastTask, lastTaskDateContainer){
         // if last task doesn't exist or if the task isn't the same day as last task, create new container
         // else, use the same container
-        if(!lastTask || !isSameDay(task.dueDate, lastTask.dueDate)){
+        if(!lastTask || task.dueDate !== lastTask.dueDate){
             const taskDateContainer = document.createElement("div");
             taskDateContainer.classList.add("active-project-task-date-container");
             const taskDateHeader = document.createElement("h2");

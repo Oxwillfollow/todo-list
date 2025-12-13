@@ -1,9 +1,10 @@
-import { Task, priorities } from './tasks';
+import { Task } from './tasks';
 
 class Project {
     constructor(name, description){
         this.name = name;
         this.description = description;
+        this.uniqueID = crypto.randomUUID(); // unique ID used for storage purposes
     }
 
     #tasks = [];
