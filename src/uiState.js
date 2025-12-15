@@ -3,13 +3,10 @@ import checkmarkImg from "./checkmark.svg";
 import fileEditImg from "./file-edit.svg";
 import removeImg from "./remove.svg";
 
-
-///////
 ////// TO DO:
+////// 0. REFACTOR CODE, ESPECIALLY IN uiState.js
 ////// 1. ICON NEXT TO TASKS -> HOVER -> DISPLAY NOTES
 ////// 2. ADD LEGEND TO EXPLAIN PRIORITY COLORS
-////// 3. SAVE PROJECTS LOCALLY AND LOAD THEM
-////// 4. IMPROVE STYLING
 
 const uiStateManager = (function(){
     const cacheDOM = (function(){

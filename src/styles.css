@@ -86,19 +86,21 @@ footer{
     }
 }
 
+#project-description,
 #task-notes{
     resize: none;
     height: 128px;
 }
 
 #task-dueTime,
-#task-notes{
+#task-notes,
+#project-description{
     background-color: rgb(224, 224, 224);
 }
 
-
 label[for="task-notes"],
-label[for="task-dueTime"]{
+label[for="task-dueTime"],
+label[for="project-description"]{
     font-style: italic;
 }
 
@@ -213,6 +215,10 @@ h3 {
 
 .active-project-task-checkbox[data-completed="true"]+.active-project-task-header-container{
     text-decoration: line-through;
+
+    +.active-project-task-dueDate{
+        text-decoration: line-through;
+    }
 }
 
 .active-project-task-date-container{
