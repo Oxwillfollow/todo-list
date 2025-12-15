@@ -1,12 +1,13 @@
-import { format } from "date-fns";
+import { format, formatRelative } from "date-fns";
 import checkmarkImg from "./checkmark.svg";
 import fileEditImg from "./file-edit.svg";
+import notesImg from "./notes.svg";
 import removeImg from "./remove.svg";
 
 ////// TO DO:
-////// 0. REFACTOR CODE, ESPECIALLY IN uiState.js
 ////// 1. ICON NEXT TO TASKS -> HOVER -> DISPLAY NOTES
 ////// 2. ADD LEGEND TO EXPLAIN PRIORITY COLORS
+////// 3. ADD NEW FONT
 
 const uiStateManager = (function(){
     const cacheDOM = (function(){
@@ -58,6 +59,26 @@ const uiStateManager = (function(){
                 newBtn,
             },
         }
+    })();
+
+    const taskNotes = (function(){
+        const taskNotesBox = document.createElement("div");
+        taskNotesBox.style.display = "none";
+        taskNotesBox.id = "task-notes-box";
+        taskNotesBox.style.width = "240px";
+        taskNotesBox.style.minHeight = "120px";
+
+        const notesHeader = document.createElement("h3");
+        notesHeader.textContent = "Notes";
+        const notesPara = document.createElement("p");
+        
+        taskNotesBox.append(notesHeader, notesPara);
+        cacheDOM.main.activeProjectContainer.appendChild(taskNotesBox);
+
+        return {
+            taskNotesBox,
+            notesPara
+        };
     })();
 
     let interfaceManager;
@@ -245,6 +266,7 @@ const uiStateManager = (function(){
         projectEditBtn.classList.add("project-edit-btn");
         projectEditBtn.addEventListener("click", () => openProjectDialog(project));
         const projectEditImg = document.createElement("img");
+        projectEditImg.classList.add("icon");
         projectEditImg.src = fileEditImg;
         projectEditBtn.appendChild(projectEditImg);
 
@@ -253,6 +275,7 @@ const uiStateManager = (function(){
         projectRemoveBtn.classList.add("project-remove-btn");
         projectRemoveBtn.addEventListener("click", () => interfaceManager.removeProject(project));
         const projectRemoveImg = document.createElement("img");
+        projectRemoveImg.classList.add("icon");
         projectRemoveImg.src = removeImg;
         projectRemoveBtn.appendChild(projectRemoveImg);
 
@@ -327,6 +350,7 @@ const uiStateManager = (function(){
         taskCheckbox.dataset.completed = task.completed.toString();
         taskCheckbox.addEventListener("click", (e) => interfaceManager.toggleTaskStatus(e, task));
         const taskCheckmark = document.createElement("img")
+        taskCheckmark.classList.add("icon");
         taskCheckmark.src = checkmarkImg;
         taskCheckmark.alt = "checkmark";
         taskCheckmark.classList.add("active-project-task-checkmark");
@@ -337,17 +361,29 @@ const uiStateManager = (function(){
         const taskDueDatePara = document.createElement("p");
         taskDueDatePara.classList.add("active-project-task-dueDate");
         taskDueDatePara.textContent = task.dueTime ? `Due at: ${task.dueTime}` : "";
-
+        // button container
+        const taskButtonContainer = document.createElement("div");
+        taskButtonContainer.classList.add("active-project-task-btn-container");
         // remove button
         const taskRemoveBtn = document.createElement("button");
         taskRemoveBtn.classList.add("active-project-task-remove-btn");
         taskRemoveBtn.addEventListener("click", () => interfaceManager.removeTask(task));
         const taskRemoveImg = document.createElement("img");
         taskRemoveImg.src = removeImg;
+        taskRemoveImg.classList.add("icon");
         taskRemoveBtn.appendChild(taskRemoveImg);
-        // button container
-        const taskButtonContainer = document.createElement("div");
-        taskButtonContainer.classList.add("active-project-task-btn-container");
+        // notes icon
+        if(task.notes.length > 0){
+            const taskNotes = document.createElement("div");
+            taskNotes.classList.add("active-project-task-notes");
+            taskNotes.addEventListener("mouseenter", (e) => displayNotes(e, task));
+            taskNotes.addEventListener("mouseleave", () => hideNotes());
+            const taskNotesImg = document.createElement("img");
+            taskNotesImg.classList.add("icon");
+            taskNotesImg.src = notesImg;
+            taskNotes.appendChild(taskNotesImg);
+            taskButtonContainer.appendChild(taskNotes);
+        }
         taskButtonContainer.appendChild(taskRemoveBtn);
         // header container
         const taskHeaderContainer = document.createElement("div");
@@ -360,6 +396,21 @@ const uiStateManager = (function(){
         cacheDOM.main.activeProjectTasksContainer.appendChild(taskDateContainer);
 
         return taskDateContainer;
+    }
+
+    function displayNotes(e, task){
+        taskNotes.taskNotesBox.style.display = "flex";
+        taskNotes.notesPara.textContent = task.notes;
+        const elementPos = getAbsolutePosition(e.currentTarget);
+        const offsetY = taskNotes.taskNotesBox.offsetHeight;
+
+        taskNotes.taskNotesBox.style.left = `${elementPos.left}px`;
+        taskNotes.taskNotesBox.style.top = `${elementPos.top - offsetY}px`;
+    }
+
+    function hideNotes(){
+        taskNotes.taskNotesBox.style.display = "none";
+        taskNotes.notesPara.textContent = "";
     }
 
     function createTaskDateContainer(task, lastTask, lastTaskDateContainer){
@@ -378,6 +429,17 @@ const uiStateManager = (function(){
         else{
             return lastTaskDateContainer;
         }
+    }
+
+    function getAbsolutePosition(element) {
+        const rect = element.getBoundingClientRect();
+        
+        return {
+            top: rect.top + window.scrollY,
+            left: rect.left + window.scrollX,
+            bottom: rect.bottom + window.scrollY,
+            right: rect.right + window.scrollX
+        };
     }
 
     const init = function(interfaceMng){

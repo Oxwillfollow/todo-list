@@ -35,7 +35,7 @@
             <label for="project-name">Project name:</label>
             <input type="text" id="project-name" name="project-name" required>
             <label for="project-description">Project description (optional):</label>
-            <textarea type="text" id="project-description" name="project-description"></textarea>
+            <textarea type="text" id="project-description" name="project-description" maxlength="200"></textarea>
             <button type="submit" id="save-project-btn">Save</button>
         </form>
     </dialog>
@@ -48,7 +48,7 @@
             <label for="task-dueTime">Due time (optional):</label>
             <input type="time" id="task-dueTime" name="task-dueTime">
             <label for="task-notes">Notes (optional):</label>
-            <textarea id="task-notes" name="task-notes"></textarea>
+            <textarea id="task-notes" name="task-notes" maxlength="200"></textarea>
             <label for="task-priority">Priority:</label>
             <select name="task-priority" id="task-priority" required>
                 <option value="low">low</option>
