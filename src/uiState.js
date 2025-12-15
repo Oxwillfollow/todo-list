@@ -1,13 +1,8 @@
 import { format, formatRelative } from "date-fns";
-import checkmarkImg from "./checkmark.svg";
-import fileEditImg from "./file-edit.svg";
-import notesImg from "./notes.svg";
-import removeImg from "./remove.svg";
-
-////// TO DO:
-////// 1. ICON NEXT TO TASKS -> HOVER -> DISPLAY NOTES
-////// 2. ADD LEGEND TO EXPLAIN PRIORITY COLORS
-////// 3. ADD NEW FONT
+import checkmarkImg from "./images/checkmark.svg";
+import fileEditImg from "./images/file-edit.svg";
+import notesImg from "./images/notes.svg";
+import removeImg from "./images/remove.svg";
 
 const uiStateManager = (function(){
     const cacheDOM = (function(){
